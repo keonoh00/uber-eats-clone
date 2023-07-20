@@ -5,6 +5,7 @@ import { RandomModule } from './random/random.module';
 import { ApolloDriver } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { ERandom } from './random/entities/random.entity';
 
 @Module({
   imports: [
@@ -33,11 +34,17 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      synchronize: true, // When typeORM connects to the database, is going to also migrate your db to current state of your module
+      /*
+      synchronize: When typeORM connects to the database,
+      is going to also migrate your db to current state of your module.
+      This is when you are using "entities"
+      However, in prod, the DB is mostly live, so should not migrate without attention.
+      */
+      synchronize: process.env.NODE_ENV !== 'prod',
       logging: true,
+      entities: [ERandom], //
 
       // UNKNOWN OPTIONS
-      // entities: ['Post', 'Category'],
       // subscribers: [],
       // migrations: [],
     }),
