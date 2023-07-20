@@ -1,9 +1,14 @@
 import { Query, Resolver } from '@nestjs/graphql';
+import { ERandom } from './entities/random.entity';
 
-@Resolver()
+@Resolver(() => ERandom)
 export class RandomResolver {
-  @Query(() => Boolean)
-  isThisGood(): boolean {
-    return true;
+  @Query(() => ERandom)
+  queryRandom(): ERandom {
+    return {
+      name: 'MyName',
+      year: 200434,
+      isGood: false,
+    };
   }
 }
